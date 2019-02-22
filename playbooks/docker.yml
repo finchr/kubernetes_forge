@@ -1,0 +1,33 @@
+- hosts: all
+
+  vars:
+    pip_install_packages:
+      - name: docker
+    docker_version: '17.03'
+    docker_edition: 'ce'
+    ## docker_package: "docker-{{ docker_edition }}={{ docker_version }}.*"
+    docker_package: "docker-{{ docker_edition }}"
+    docker_package_state: present
+
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+
+  tasks:
+    - name: Add vagrant to group docker
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
+
+    - name: Preload rancher system images
+      shell: for x in *.tar.gz; do zcat $x | docker load; done
+      args:
+        chdir: /vagrant/
+
+    - name: "Add rancher to  hosts file"
+      lineinfile: 
+        dest=/etc/hosts
+        regexp='.*rancher.minikube.info$'
+        line="192.168.99.122 rancher.minikube.info"
+        state=present
