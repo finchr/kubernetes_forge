@@ -1,0 +1,30 @@
+[ req ]
+default_bits		= 2048
+default_md		= sha256
+distinguished_name	= req_distinguished_name
+req_extensions		= req_ext
+prompt			= no
+
+[ req_distinguished_name ]
+countryName			= "US"
+stateOrProvinceName		= Washington
+localityName			= Seattle
+0.organizationName		= Zulily
+organizationalUnitName		= Kubernetes
+commonName			= "kubernetes.vagrant.net"
+emailAddress			= fcs-devops@zulily.com
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1   = kubernetes.vagrant.net
+DNS.2   = fcs-lsk8slb.vagrant.net
+DNS.4   = *.vagrant.net
+IP.1    = 172.28.128.200
+IP.2    = 172.28.128.11
+IP.3    = 172.28.128.12
+IP.4    = 172.28.128.13
+IP.5    = 172.28.128.111
+IP.6    = 172.28.128.112
+IP.7    = 172.28.128.113

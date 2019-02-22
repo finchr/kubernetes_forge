@@ -1,0 +1,60 @@
+---
+<% 
+require 'yaml'
+hosts = YAML.load_file('vagrant/hosts.yml')
+cluster = YAML.load_file('rke/cluster.yml')
+host_os = 'ubuntu-18.04'
+%>
+driver:
+  name: vagrant
+  username: vagrant
+  sudo: true
+  customize:
+    cpus: 1
+    memory: 2048
+    cpuexecutioncap: 100
+  synced_folders:
+    - ["./shared", "/vagrant"]
+
+transport:
+  name: ssh
+  ## ssh_key: test/integration/ssh/kitchen
+
+provisioner:
+  name: ansible_playbook
+  ansible_verbose: true
+  ansible_verbosity: 3
+  ansible_sudo: true
+  ## hosts: all
+  ansible_inventory: vagrant/hosts.yml
+
+platforms:
+  - name: ubuntu-16.04
+  - name: ubuntu-18.04
+  - name: centos-7
+
+verifier:
+  name: inspec
+
+suites:
+<% 
+  ## hosts['all']['hosts'].each do |host, data| 
+  ## host_ip = data['ansible_host']
+  cluster['nodes'].each do |node|
+  ## host = node['hostname_override']
+%>
+  - name: <%= node['hostname_override'] %>
+    driver:
+      vm_hostname: <%= node['hostname_override'] %>
+      network:
+      - ["private_network", {ip: <%= node['address']  %>}]
+      - ["private_network", {ip: <%= node['internal_address']  %>}]
+    provisioner:
+      ansible_limit: <%= node['hostname_override'] %>
+      playbook: playbooks/vagrant.yml
+    includes:
+      - <%= host_os %>
+    verifier:
+      inspec_tests:
+        - test/integration/default
+<% end %>
