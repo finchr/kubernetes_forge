@@ -3,7 +3,7 @@
 require 'yaml'
 hosts = YAML.load_file('vagrant/hosts.yml')
 cluster = YAML.load_file('rke/cluster.yml')
-host_os = 'ubuntu-18.04'
+host_os = 'ubuntu-16.04'
 %>
 driver:
   name: vagrant
@@ -51,7 +51,7 @@ suites:
       - ["private_network", {ip: <%= node['internal_address']  %>}]
     provisioner:
       ansible_limit: <%= node['hostname_override'] %>
-      playbook: playbooks/vagrant.yml
+      playbook: playbooks/setup.yml
     includes:
       - <%= host_os %>
     verifier:

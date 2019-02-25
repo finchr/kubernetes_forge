@@ -1,4 +1,5 @@
 
 # from galaxy
+- src: atosatto.docker-swarm
 - src: geerlingguy.pip
 - src: geerlingguy.docker

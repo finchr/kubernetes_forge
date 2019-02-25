@@ -23,7 +23,7 @@
     - name: Preload rancher system images
       shell: for x in *.tar.gz; do zcat $x | docker load; done
       args:
-        chdir: /vagrant/
+        chdir: /vagrant/shared
 
     - name: "Add rancher to  hosts file"
       lineinfile: 

@@ -10,7 +10,7 @@ nodes:
   hostname_override: master1
   user: vagrant
   docker_socket: /var/run/docker.sock
-  ssh_key_path: .kitchen/kitchen-vagrant/master1*/.vagrant/machines/default/virtualbox/private_key
+  ssh_key_path: .kitchen/kitchen-vagrant/master1-ubuntu-1604/.vagrant/machines/default/virtualbox/private_key
 - address: 172.28.128.21
   port: 22
   internal_address: 172.28.128.121
@@ -19,7 +19,7 @@ nodes:
   hostname_override: worker1
   user: vagrant
   docker_socket: /var/run/docker.sock
-  ssh_key_path: .kitchen/kitchen-vagrant/worker1*/.vagrant/machines/default/virtualbox/private_key
+  ssh_key_path: .kitchen/kitchen-vagrant/worker1-ubuntu-1604/.vagrant/machines/default/virtualbox/private_key
   labels:
     type: load_balancer
 - address: 172.28.128.22
@@ -30,7 +30,7 @@ nodes:
   hostname_override: worker2
   user: vagrant
   docker_socket: /var/run/docker.sock
-  ssh_key_path: .kitchen/kitchen-vagrant/worker2*/.vagrant/machines/default/virtualbox/private_key
+  ssh_key_path: .kitchen/kitchen-vagrant/worker2-ubuntu-1604/.vagrant/machines/default/virtualbox/private_key
   labels:
     type: worker
 services:

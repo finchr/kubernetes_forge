@@ -1,0 +1,13 @@
+- hosts: all
+
+  vars:
+
+  roles:
+    - atosatto.docker-swarm
+
+  tasks:
+    - name: Add vagrant to group docker
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
