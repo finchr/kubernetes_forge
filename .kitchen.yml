@@ -24,9 +24,11 @@ provisioner:
   name: ansible_playbook
   ansible_verbose: true
   ansible_verbosity: 3
-  ansible_sudo: true
-  ## hosts: all
+  ansible_version: latest
+  ansible_become: true
+  ansible_host_key_checking: false
   ansible_inventory: vagrant/hosts.yml
+  require_chef_for_busser: false
 
 platforms:
   - name: ubuntu-16.04

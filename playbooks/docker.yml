@@ -14,9 +14,9 @@
     - geerlingguy.docker
 
   tasks:
-    - name: Add vagrant to group docker
+    - name: Add ansible_user to group docker
       user:
-        name: vagrant
+        name: "{{ ansible_user }}"
         groups: docker
         append: yes
 
@@ -24,10 +24,3 @@
       shell: for x in *.tar.gz; do zcat $x | docker load; done
       args:
         chdir: /vagrant/shared
-
-    - name: "Add rancher to  hosts file"
-      lineinfile: 
-        dest=/etc/hosts
-        regexp='.*rancher.minikube.info$'
-        line="192.168.99.122 rancher.minikube.info"
-        state=present
