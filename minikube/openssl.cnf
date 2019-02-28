@@ -1,0 +1,32 @@
+[req]
+default_bits = 4096
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = dn
+
+[ dn ]
+C=US
+ST=Washington
+L=Tacoma
+O=Minikube
+OU=Rancher Kubernetes Engine
+emailAddress=ray.finch@gmail.com
+CN = rancher.minikube.info
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = minikube.info
+DNS.2 = rancher.minikube.info
+IP.1 = 192.168.99.100
+IP.2 = 192.168.99.101
+IP.3 = 192.168.99.102
+IP.4 = 192.168.99.103
+IP.5 = 192.168.99.104
+IP.6 = 192.168.99.105
+IP.7 = 192.168.99.106
+IP.8 = 192.168.99.107
+IP.9 = 192.168.99.108
+IP.10 = 192.168.99.109
