@@ -9,3 +9,5 @@ bin/*
 .kitchen.local.yml
 
 playbooks/*.retry
+rke/kube_config_cluster.yml
+shared/*.tar.gz

@@ -84,10 +84,4 @@ authorization:
 ignore_docker_version: true
 ingress:
   provider: none
-addons_include: 
-  - ./services/echoheaders.yaml
-  - ./services/nginx-ingress/namespace.yaml
-  - ./vagrant/ingress-tls-default.yaml
-  - ./vagrant/keepalived-configmap.yaml
-  - ./services/keepalived_deploy.yaml
-  - ./services/tiller_deploy.yaml
+addons_include: []
