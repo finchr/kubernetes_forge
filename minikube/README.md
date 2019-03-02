@@ -20,29 +20,47 @@
     kubectl -n cattle-system rollout status deploy/rancher
 
 
-### SSL Certificates
+## SSL Certificates
 
-Self signed certificate: 
+### Generate key: 
 
-    openssl req -config openssl.cnf -x509 -sha256 -newkey rsa:2048 \
-      -keyout tls.key -out tls.crt -days 1024 -nodes
+    openssl genrsa -aes256 -out tls.key.tmp 4096
+    openssl rsa -in tls.key.tmp -out tls.key
 
-Certificate Signing Request:
+### Self signed certificate:
 
-    openssl req -config openssl.cnf -new -newkey rsa:2048 -nodes \
-      -out tls.csr \
-      -keyout tls.key
-
-    openssl x509 -req -days 3600 \
-      -in tls.csr \
-      -out tls.crt \
-      -CAcreateserial
-
-    openssl x509 -req -days 360 -CAcreateserial \
-      -in tls.csr \
-      -CA /opt/rootca/ca.pem \
-      -CAkey /opt/rootca/ca.key \
+    openssl req -new -x509 -days 365 \
+      -extensions req_ext \
+      -key tls.key \
       -out tls.crt
+    openssl x509 -req -days 365 \
+      -extensions req_ext \
+      -signkey tls.key \
+      -in tls.csr \
+      -out tls.crt
+    openssl x509 -in tls.crt -text -noout
+
+### Certificate signed by local CA:
+
+#### Create certificate Signing Request:
+
+    openssl req -config openssl.cnf -new -sha256 \
+      -key tls.key \
+      -out tls.csr
+    openssl req -text -noout -verify -in tls.csr
+
+#### Sign certificate with local authority:
+
+    openssl ca -config /opt/rootca/openssl.cnf \
+      -extensions server_cert -days 375 -notext -md sha256 \
+      -in tls.csr \
+      -out tls.crt.raw
+
+    cp /opt/rootca/certs/ca.cert.pem cacerts.pem
+    cat tls.crt.raw cacerts.pem > tls.crt
+    openssl x509 -in tls.crt -text -noout
 
     kubectl -n cattle-system create secret tls tls-rancher-ingress \
       --cert=tls.crt --key=tls.key
+    kubectl -n cattle-system create secret generic tls-ca \
+      --from-file=cacerts.pem

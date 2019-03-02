@@ -13,12 +13,3 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
-
-    - name: Copy rancher crt to host
-      copy:
-        src: ./minikube/tls.crt
-        dest: /usr/local/share/ca-certificates/tls.crt
-        mode: 0644
-
-    - name: Run update-ca-certificates
-      command: update-ca-certificates
