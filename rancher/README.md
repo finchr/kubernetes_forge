@@ -1,24 +1,33 @@
 
 
-    helm upgrade --install cert-manager \
-      stable/cert-manager \
-      --namespace kube-system
-    kubectl -n kube-system rollout status deploy/cert-manager
+## Rancher Install
+
+### Install Helm
+
+    helm init --service-account tiller
+
+### Install certificates used by ingress and rancher
+
+    kubectl -n cattle-system create secret tls tls-rancher-ingress \
+      --cert=tls.crt --key=tls.key
+    kubectl -n cattle-system create secret generic tls-ca \
+      --from-file=cacerts.pem
+
+### Install Rancher
 
     helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
-
-    helm upgrade --install ingress-nginx \
-      stable/nginx-ingress \
-      --namespace ingress \
-      -f ingress-values.yaml
-    kubectl -n ingress rollout status deployment/ingress-nginx-ingress-controller
-
     helm upgrade --install rancher \
       rancher-latest/rancher \
       --namespace cattle-system \
       -f rancher-values.yaml
     kubectl -n cattle-system rollout status deploy/rancher
 
+### Install ingress-nginx
+
+    helm upgrade --install ingress-nginx \
+      stable/nginx-ingress \
+      --namespace ingress \
+      -f ingress-values.yaml
 
 ## SSL Certificates
 
@@ -51,16 +60,12 @@
 
 #### Sign certificate with local authority:
 
-    openssl ca -config /opt/rootca/openssl.cnf \
+    openssl ca -config /var/root/ca/openssl.cnf \
       -extensions server_cert -days 375 -notext -md sha256 \
       -in tls.csr \
       -out tls.crt.raw
 
-    cp /opt/rootca/certs/ca.cert.pem cacerts.pem
+    cp /var/root/ca/certs/ca.cert.pem cacerts.pem
     cat tls.crt.raw cacerts.pem > tls.crt
     openssl x509 -in tls.crt -text -noout
 
-    kubectl -n cattle-system create secret tls tls-rancher-ingress \
-      --cert=tls.crt --key=tls.key
-    kubectl -n cattle-system create secret generic tls-ca \
-      --from-file=cacerts.pem

@@ -7,7 +7,7 @@ addLocal: "auto"
 # Add debug flag to Rancher server
 debug: false
 
-hostname: rancher.minikube.info
+hostname: rancher1
 
 ### ingress ###
 ingress:

@@ -23,4 +23,4 @@
     - name: Preload rancher system images
       shell: for x in *.tar.gz; do zcat $x | docker load; done
       args:
-        chdir: /vagrant/shared
+        chdir: /tmp/shared

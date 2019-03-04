@@ -7,7 +7,7 @@
   tasks:
     - name: Copy rootca crt to host
       copy:
-        src: /opt/rootca/certs/ca.cert.pem
+        src: ../rancher/cacerts.pem
         dest: /usr/local/share/ca-certificates/cacerts.crt
         mode: 0644
 

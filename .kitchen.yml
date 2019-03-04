@@ -2,7 +2,6 @@
 <% 
 require 'yaml'
 hosts = YAML.load_file('vagrant/hosts.yml')
-cluster = YAML.load_file('rke/cluster.yml')
 host_os = 'ubuntu-16.04'
 %>
 driver:
@@ -14,11 +13,10 @@ driver:
     memory: 2048
     cpuexecutioncap: 100
   synced_folders:
-    - [".", "/vagrant"]
+    - ["/tmp/shared", "/tmp/shared"]
 
 transport:
   name: ssh
-  ## ssh_key: test/integration/ssh/kitchen
 
 provisioner:
   name: ansible_playbook
@@ -40,19 +38,18 @@ verifier:
 
 suites:
 <% 
-  ## hosts['all']['hosts'].each do |host, data| 
-  ## host_ip = data['ansible_host']
-  cluster['nodes'].each do |node|
-  ## host = node['hostname_override']
+  hosts['all']['hosts'].each do |host, data| 
+  ip1 = data['ansible_host']
+  ip2 = data['rke_hack_ip']
 %>
-  - name: <%= node['hostname_override'] %>
+  - name: <%= host %>
     driver:
-      vm_hostname: <%= node['hostname_override'] %>
+      vm_hostname: <%= host %>
       network:
-      - ["private_network", {ip: <%= node['address']  %>}]
-      - ["private_network", {ip: <%= node['internal_address']  %>}]
+      - ["private_network", {ip: <%= ip1  %>}]
+      - ["private_network", {ip: <%= ip2  %>}]
     provisioner:
-      ansible_limit: <%= node['hostname_override'] %>
+      ansible_limit: <%= host %>
       playbook: playbooks/setup.yml
     includes:
       - <%= host_os %>

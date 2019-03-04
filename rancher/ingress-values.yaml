@@ -37,7 +37,7 @@ controller:
   ## Required only if defaultBackend.enabled = false
   ## Must be <namespace>/<service_name>
   ##
-  defaultBackendService: ""
+  defaultBackendService: "cattle-system/rancher"
 
   ## Election ID to use for status update
   ##
@@ -69,7 +69,7 @@ controller:
   ## Additional command line arguments to pass to nginx-ingress-controller
   ## E.g. to specify the default SSL certificate you can use
   extraArgs:
-     default-ssl-certificate: cattle-systems/tls-rancher-ingress
+     default-ssl-certificate: cattle-system/tls-rancher-ingress
 
   ## Additional environment variables to set
   extraEnvs: []
@@ -256,7 +256,7 @@ defaultBackend:
 
   ## If false, controller.defaultBackendService must be provided
   ##
-  enabled: true
+  enabled: false
 
   name: default-backend
   image:
