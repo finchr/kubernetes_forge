@@ -3,6 +3,8 @@
   vars:
 
   roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
 
   tasks:
     - name: Add IP address of all hosts to all hosts
@@ -13,3 +15,9 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+
+    - name: Add ansible_user to group docker
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes

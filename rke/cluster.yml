@@ -1,18 +1,18 @@
 # If you intened to deploy Kubernetes in an air-gapped environment,
 # please consult the documentation on how to configure custom RKE images.
 nodes:
-- address: 172.28.128.11
+- address: 172.28.128.111
   port: 22
-  internal_address: 172.28.128.111
+  internal_address: 172.28.128.11
   role:
   - controlplane
   - etcd
   hostname_override: master1
   user: vagrant
   docker_socket: /var/run/docker.sock
-- address: 172.28.128.21
+- address: 172.28.128.121
   port: 22
-  internal_address: 172.28.128.121
+  internal_address: 172.28.128.21
   role:
   - worker
   hostname_override: worker1
@@ -20,9 +20,9 @@ nodes:
   docker_socket: /var/run/docker.sock
   labels:
     type: load_balancer
-- address: 172.28.128.22
+- address: 172.28.128.122
   port: 22
-  internal_address: 172.28.128.122
+  internal_address: 172.28.128.22
   role:
   - worker
   hostname_override: worker2

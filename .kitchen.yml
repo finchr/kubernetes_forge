@@ -2,7 +2,6 @@
 <% 
 require 'yaml'
 hosts = YAML.load_file('vagrant/hosts.yml')
-host_os = 'ubuntu-16.04'
 %>
 driver:
   name: vagrant
@@ -13,7 +12,7 @@ driver:
     memory: 2048
     cpuexecutioncap: 100
   synced_folders:
-    - ["/tmp/shared", "/tmp/shared"]
+    - [".", "/vagrant"]
 
 transport:
   name: ssh
@@ -27,6 +26,7 @@ provisioner:
   ansible_host_key_checking: false
   ansible_inventory: vagrant/hosts.yml
   require_chef_for_busser: false
+  roles_path: playbooks/roles
 
 platforms:
   - name: ubuntu-16.04
@@ -37,22 +37,25 @@ verifier:
   name: inspec
 
 suites:
-<% 
-  hosts['all']['hosts'].each do |host, data| 
-  ip1 = data['ansible_host']
-  ip2 = data['rke_hack_ip']
-%>
+<% hosts['all']['hosts'].each do |host, data| %>
   - name: <%= host %>
     driver:
       vm_hostname: <%= host %>
       network:
-      - ["private_network", {ip: <%= ip1  %>}]
-      - ["private_network", {ip: <%= ip2  %>}]
+      - ["private_network", {ip: <%= data['ansible_host']  %>}]
+      - ["private_network", {ip: <%= data['rke_hack_ip']  %>}]
     provisioner:
       ansible_limit: <%= host %>
       playbook: playbooks/setup.yml
+    lifecycle:
+      pre_converge: 
+        - echo "Remove docker-machine <%= host %>"
+        - local: docker-machine rm --force <%= host %>
+      post_converge:
+        - echo "Create docker-machine for <%= host %>"
+        - local: docker-machine create --driver generic --generic-ip-address=<%= data['ansible_host'] %> --generic-ssh-user=vagrant <%= host %>
     includes:
-      - <%= host_os %>
+      - <%= data['host_os'] %>
     verifier:
       inspec_tests:
         - test/integration/default
