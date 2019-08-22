@@ -25,6 +25,8 @@ provisioner:
   ansible_become: true
   ansible_host_key_checking: false
   ansible_inventory: vagrant/hosts.yml
+  extra_vars:
+    ansible_ssh_pass: vagrant
   require_chef_for_busser: false
   roles_path: playbooks/roles
 

@@ -55,6 +55,6 @@ ignore_docker_version: true
 ingress:
   provider: none
 addons_include:
-  - common/cattle_deploy.yaml
-  - rke/cattle_credential.yaml
-  - common/cattle_rbac.yaml
+  ## - common/cattle_deploy.yaml
+  ## - rke/cattle_credential.yaml
+  ## - common/cattle_rbac.yaml

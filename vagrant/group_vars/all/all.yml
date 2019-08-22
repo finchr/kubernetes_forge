@@ -13,14 +13,15 @@ bin_dir: /usr/local/bin
 ## this node for example.  The access_ip is really useful AWS and Google
 ## environments where the nodes are accessed remotely by the "public" ip,
 ## but don't know about that address themselves.
-# access_ip: 1.1.1.1
+## access_ip: 172.28.128.11
+etcd_address: 172.28.128.11
 
 
 ## External LB example config
 ## apiserver_loadbalancer_domain_name: "elb.some.domain"
-# loadbalancer_apiserver:
-#   address: 1.2.3.4
-#   port: 1234
+loadbalancer_apiserver:
+  address: 172.28.128.11
+  port: 6443
 
 ## Internal loadbalancers for apiservers
 # loadbalancer_apiserver_localhost: true
