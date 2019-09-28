@@ -28,7 +28,7 @@ provisioner:
   extra_vars:
     ansible_ssh_pass: vagrant
   require_chef_for_busser: false
-  roles_path: playbooks/roles
+  roles_path: roles
 
 platforms:
   - name: ubuntu-16.04

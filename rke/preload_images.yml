@@ -1,0 +1,15 @@
+- hosts: all
+
+  vars:
+
+  roles:
+
+  tasks:
+    - name: Get list of saved docker images
+      shell: "ls /tmp/omnibus/cache/docker_images/*.tar.gz"
+      register: command_result
+
+    - name: Preload saved docker images
+      command: "docker load -i {{ item }}"
+      with_items:
+        - "{{ command_result.stdout_lines }}"

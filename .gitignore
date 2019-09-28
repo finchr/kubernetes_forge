@@ -1,13 +1,7 @@
-.vagrant
-kubernetes_the_hard_way/
 
-# Bundler
-bin/*
-.bundle/*
-
+*.retry
 .kitchen/
-.kitchen.local.yml
-
-playbooks/*.retry
+kubernetes_the_hard_way/
 rke/kube_config_cluster.yml
-shared/*.tar.gz
+roles/
+
