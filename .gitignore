@@ -1,5 +1,5 @@
 .vagrant
-/cookbooks
+kubernetes_the_hard_way/
 
 # Bundler
 bin/*

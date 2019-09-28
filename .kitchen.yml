@@ -45,17 +45,9 @@ suites:
       vm_hostname: <%= host %>
       network:
       - ["private_network", {ip: <%= data['ansible_host']  %>}]
-      - ["private_network", {ip: <%= data['rke_hack_ip']  %>}]
     provisioner:
       ansible_limit: <%= host %>
-      playbook: playbooks/setup.yml
-    lifecycle:
-      pre_converge: 
-        - echo "Remove docker-machine <%= host %>"
-        - local: docker-machine rm --force <%= host %>
-      post_converge:
-        - echo "Create docker-machine for <%= host %>"
-        - local: docker-machine create --driver generic --generic-ip-address=<%= data['ansible_host'] %> --generic-ssh-user=vagrant <%= host %>
+      playbook: vagrant/setup.yml
     includes:
       - <%= data['host_os'] %>
     verifier:

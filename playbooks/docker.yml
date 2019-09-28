@@ -19,8 +19,3 @@
         name: "{{ ansible_user }}"
         groups: docker
         append: yes
-
-    - name: Preload rancher system images
-      shell: for x in *.tar.gz; do zcat $x | docker load; done
-      args:
-        chdir: /tmp/shared
