@@ -11,8 +11,8 @@
 ### RKE 
 
     ansible-playbook -i vagrant/hosts.yml rke/preload_images.yml
-    rke up --config rke/cluster.yml
-    export KUBECONFIG=rke/kube_config.yaml
+    rke up --config=rke/cluster.yml
+    export KUBECONFIG=rke/kube_config_cluster.yml
 
 ### Kubespray 
 
