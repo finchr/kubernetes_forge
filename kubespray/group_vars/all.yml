@@ -1,0 +1,2 @@
+kubectl_localhost: true
+kubeconfig_localhost: true
