@@ -17,4 +17,5 @@
 ### Kubespray 
 
     ansible-playbook -i vagrant/hosts.yml kubespray/cluster.yml
+    git submodule update --init
     export KUBECONFIG=vagrant/artifacts/admin.conf
